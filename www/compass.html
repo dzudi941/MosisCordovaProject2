@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="js/jquery-1.10.1.min.js"></script>
+    <link href="theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <script type="text/javascript">
+    document.addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady() {
+        function onSuccess(heading) {
+            var compasAngle = -heading.magneticHeading-25;
+            var ele = document.getElementById('compass-image');
+            ele.style.webkitTransform="rotate("+compasAngle+"deg)";
+        };
+
+        function onError(compassError) {
+            alert('Compass error: ' + compassError.code);
+        };
+
+        var options = {
+            frequency: 100
+        }; // Update every 3 seconds
+
+        var watchID = navigator.compass.watchHeading(onSuccess, onError, options);
+
+
+        function onAccSuccess(acceleration) {
+            $('#acceleration-show').html('Acceleration X: ' + acceleration.x + '<br>' +
+                  'Acceleration Y: ' + acceleration.y + '<br>' +
+                  'Acceleration Z: ' + acceleration.z + '<br>' +
+                  'Timestamp: '      + acceleration.timestamp + '<br>');
+        }
+
+        function onAccError() {
+            alert('onError!');
+        }
+
+        var optionsAcc = { frequency: 3000 };  // Update every 3 seconds
+        var watchID = navigator.accelerometer.watchAcceleration(onAccSuccess, onAccError, optionsAcc);
+    }
+    </script>
+  </head>
+  <body>
+  <div id="menu"></div>
+      <div class="col-xs-12 col-sm-12">
+        <label style="margin-left: 45%">JUG</label>
+        <img style="overflow: hidden;" class="img-responsive" id="compass-image" src="file:///android_asset/www/img/compass-icon.png">
+        <label style="margin-left: 45%">SEVER</label>
+      </div>
+      <div class="col-xs-12 col-sm-12" id="acceleration-show">
+          
+      </div>
+    <script type="text/javascript">
+      $('#menu').load('menu.html');
+    </script>
+    <script src="theme/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,112 @@
+<!--<div id="myNavmenuCanvas">
+  <nav id="myNavmenu" class="navmenu navmenu-default navmenu-fixed-left offcanvas" role="navigation">
+    <a class="navmenu-brand" href="#">Brand</a>
+    <ul class="nav navmenu-nav">
+      <li id="list1" class="active"><a style="height: 70px;font-size: 24px;" href="index.html">Home</a></li>
+      <li id="list2"><a style="height: 70px;font-size: 24px;" href="maps.html">Maps</a></li>
+      <li id="list3"><a style="height: 70px;font-size: 24px;" href="geolocation.html">Location</a></li>
+    </ul>
+  </nav>
+  <div class="navbar navbar-default navbar-fixed-top">
+    <button type="button" class="navbar-toggle menu-button" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="#myNavmenuCanvas" data-placement="left">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+  </div>
+</div>-->
+
+
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#"><canvas id="my-app-logo" width="50" height="25" style="/*border:1px solid #d3d3d3;*/">
+      Your browser does not support the HTML5 canvas tag.</canvas></a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li id="list1" class="active"><a style="/*height: 70px;font-size: 24px;*/" href="index.html">Početna</a></li>
+        <li id="list2"><a style="/*height: 70px;font-size: 24px;*/" href="compass.html">Kompas</a></li>
+        <li id="list3"><a style="/*height: 70px;font-size: 24px;*/" href="geolocation.html">Location</a></li>
+        <li id="list4"><a style="/*height: 70px;font-size: 24px;*/" href="search.html">Pretraži</a></li>
+        <li id="list5"><a style="/*height: 70px;font-size: 24px;*/" href="addlocation.html">Dodaj objekat</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script type="text/javascript">
+  var pathname = window.location.pathname;
+  if(pathname.indexOf('index') !== -1)
+  {
+    $('#list1').attr('class', 'active');
+    $('#list2').attr('class', '');
+    $('#list3').attr('class', '');
+    $('#list4').attr('class', '');
+    $('#list5').attr('class', '');
+
+  }
+  else if(pathname.indexOf('compass') !== -1)
+  {
+    $('#list1').attr('class', '');
+    $('#list2').attr('class', 'active');
+    $('#list3').attr('class', '');
+    $('#list4').attr('class', '');
+    $('#list5').attr('class', '');
+  }
+  else if (pathname.indexOf('geolocation') !== -1) 
+  {
+    $('#list1').attr('class', '');
+    $('#list2').attr('class', '');
+    $('#list3').attr('class', 'active');
+    $('#list4').attr('class', '');
+    $('#list5').attr('class', '');
+  }
+  else if (pathname.indexOf('search') !== -1) 
+  {
+    $('#list1').attr('class', '');
+    $('#list2').attr('class', '');
+    $('#list3').attr('class', '');
+    $('#list4').attr('class', 'active');
+    $('#list5').attr('class', '');
+  }
+  else if (pathname.indexOf('addlocation') !== -1) 
+  {
+    $('#list1').attr('class', '');
+    $('#list2').attr('class', '');
+    $('#list3').attr('class', '');
+    $('#list4').attr('class', '');
+    $('#list5').attr('class', 'active');
+  }
+  //$('#map_canvas').html('');
+
+
+  /*
+  $(document).ready(function() {
+  
+    $('.collapse').on('shown.bs.collapse', function(e) {          alert('shown'); 
+    });
+  $('.collapse').on('hidden.bs.collapse', function(e) { 
+    alert('hiden'); 
+    });
+});
+
+map.setClickable( false )*/
+
+var c = document.getElementById("my-app-logo");
+var ctx = c.getContext("2d");
+ctx.font = "25px Arial";
+var gradient=ctx.createLinearGradient(0,0,c.width,0);
+gradient.addColorStop("0","magenta");
+gradient.addColorStop("1.0","blue");
+gradient.addColorStop("1.0","red");
+// Fill with gradient
+ctx.fillStyle=gradient;
+ctx.fillText("KuD",1,20);
+</script>

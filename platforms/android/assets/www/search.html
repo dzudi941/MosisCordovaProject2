@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="js/jquery-1.10.1.min.js"></script>
+    <link href="theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="theme/jasny-bootstrap/css/jasny-bootstrap.css" rel="stylesheet">-->
+    <link href="css/style.css" rel="stylesheet">
+
+    <script type="text/javascript">
+
+       /* document.addEventListener("deviceready", onDeviceReady, false);
+        function onDeviceReady() {
+        console.log(navigator.contacts);
+        function onSuccess(contacts) {
+            alert('Found ' + contacts.length + ' contacts.');
+        };
+
+        function onError(contactError) {
+            alert('onError!');
+        };
+
+        // find all contacts with 'Bob' in any name field
+        var options      = new ContactFindOptions();
+        options.filter   = "Tata";
+        options.multiple = true;
+        options.desiredFields = [navigator.contacts.fieldType.id];
+        options.hasPhoneNumber = true;
+        var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
+        navigator.contacts.find(fields, onSuccess, onError, options);
+        }
+    */
+    document.addEventListener("deviceready", onDeviceReady, false);
+        function onDeviceReady() {
+            var db = null;
+            db = window.sqlitePlugin.openDatabase({name: 'kud.db', location: 'default'});
+            var mapDiv = document.getElementById("map_canvas");
+            
+            PositionChanged=function(position)
+            {
+                var map = plugin.google.maps.Map.getMap(mapDiv);
+                map.remove();
+                var query = $('#search-query').val();
+                var type = $('#search-type').val();
+                var meters = $('#search-meters').val();
+                var queryString="";
+                if (type == "") {
+                    queryString = "SELECT * FROM myLocations4 WHERE title LIKE '%"+query+"%'";
+                }
+                else
+                {
+                    queryString = "SELECT * FROM myLocations4 WHERE type LIKE '%"+type+"%' AND title LIKE '%"+query+"%'";
+                }
+                db.transaction(function(tx) {
+                    tx.executeSql(queryString, [], function(tx, rs) {
+                        
+                        const MY_Location = new plugin.google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                          if (sessionStorage.MapEnapbled != undefined) {
+                                map.remove();
+                                map = plugin.google.maps.Map.getMap(mapDiv, {
+                                  'camera': {
+                                    'latLng': MY_Location,
+                                    'zoom': 15
+                                  }
+                                });
+                            }
+                            map.addEventListener(plugin.google.maps.event.MAP_READY, function() {
+                                for (var i = 0; i < rs.rows.length; i++) {
+                                    if(measure(position.coords.latitude, position.coords.longitude, rs.rows.item(i).latitude, rs.rows.item(i).longitude)<=meters){
+                                            map.addMarker({
+                                              'position': new plugin.google.maps.LatLng(rs.rows.item(i).latitude, rs.rows.item(i).longitude),
+                                              'title': rs.rows.item(i).title,
+                                              'indexValue' : i,
+                                              'objectid' : rs.rows.item(i).id,
+                                              'icon': {
+                                                'url': rs.rows.item(i).smallImageSrc
+                                               }
+                                            }, function(marker) {
+                                                marker.setIcon({
+                                                  'url': rs.rows.item(marker.get("indexValue")).smallImageSrc
+                                                });
+                                                 marker.showInfoWindow();
+                                            }); 
+                                        }
+                                }
+
+                                map.addMarker({
+                                  'position': MY_Location,
+                                  'title': 'Ti se nalazis ovde!'
+                                }, function(marker) {
+                                  marker.showInfoWindow();
+                                });
+                            });
+                    });
+                });
+            }
+            $('#search-type').on('change', function(){
+                navigator.geolocation.getCurrentPosition(PositionChanged);
+                //Search();
+            });
+            $('#search-button').on('click', function(){
+                navigator.geolocation.getCurrentPosition(PositionChanged);
+                //Search();
+            });
+
+            function measure(lat1, lon1, lat2, lon2){  // generally used geo measurement function
+                var R = 6378.137; // Radius of earth in KM
+                var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
+                var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
+                var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                var d = R * c;
+                return d * 1000; // meters
+            }
+        }
+
+    </script>
+  </head>
+  <body>
+  <div id="menu"></div>
+
+    <div class="container" style="background-color: gray; margin-top: -20px;">
+        <div class="row" >
+            <div class="col-sm-12 col-xs-12">
+                <div class="col-sm-6 col-xs-6">
+                    <label>Pretrazi po nazivu</label>
+                    <input type="text" class="form-control" id="search-query" name="">
+                </div>
+                <div class="col-sm-6 col-xs-6">
+                    <label>Pretrazi po tipu</label>
+                    <select class="form-control" id="search-type">
+                        <option value="">Svi</option>
+                        <option value="restoran">Restorani</option>
+                        <option value="spomenik">Spomenici</option>
+                        <option value="hotel">Hoteli</option>
+                        <option value="prenociste">Prenoćišta</option>
+                        <option value="muzej">Muzeji</option>
+                        <option value="park">Parkovi</option>
+                        <option value="ostalo">Ostalo</option>
+                    </select>
+                </div>
+                <div class="col-sm-12 col-xs-12" style="height: 20px;"></div>
+                <div class="col-sm-6 col-xs-6">
+                    <br>
+                    <button class="btn btn-success" id="search-button">Pretrazi</button>
+                </div>
+                <div class="col-sm-6 col-xs-6">
+                <label>U krugu od:(m)</label>
+                    <input type="number" id="search-meters" name="" class="form-control">
+                </div>
+                <div class="col-sm-12 col-xs-12" style="height: 20px;"></div>
+            </div>
+        </div>
+    </div>
+      <div style="width:100%;height: 63vh;" id="map_canvas"></div>
+
+
+    <script type="text/javascript">
+      $('#menu').load('menu.html');
+    </script>
+    <script src="theme/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>

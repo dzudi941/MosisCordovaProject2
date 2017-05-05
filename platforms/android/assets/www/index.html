@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="js/jquery-1.10.1.min.js"></script>
+    <link href="theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="theme/jasny-bootstrap/css/jasny-bootstrap.css" rel="stylesheet">-->
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/index.js"></script>
+    <script src="js/notification.js"></script>
+  </head>
+  <body>
+  <div id="menu"></div>
+
+  <div style="/*margin-top: 100px;*/ width:100%;height: 91vh;margin-top: -20px;" id="map_canvas"></div>
+
+  <!--<img id="testimg">-->
+    <div class="container">
+          <div class="well row" id="well">
+            <div class="col-xs-12 col-sm-12">
+                <img src="file:///android_asset/www/img/X.png" style="float: right; width: 24px; height: 24px;" id="X-button">
+                <button id="delet-object-button" style="float: right; margin-right: 20px;">Obriši ovaj objekat</button>
+                <button id="send-to-friend" class="btn btn-success" style="float: left;">Podšalji prijatelju</button>
+            </div>
+              <h3 id="well-title"></h3>
+              <div class="col-xs-6 col-sm-6">
+                  <img class="img-responsive" src="" id="well-img">
+              </div>
+              <div class="col-xs-6 col-sm-6">
+                    <input type="hidden" name="" id="object-id">
+                  <p id="well-description"></p>
+              </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12" id="your-notes">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12">
+                        <h4>Dodajte novu belešku:</h4>
+                        <label>Odaberite datum:</label>
+                        <input type="date" id="notes-date">
+                        <br>
+                        <label>Odaberite vreme:</label>
+                        <input type="time" id="notes-time">
+                        <br>
+                        <label>Dodajte opis:</label>
+                        <textarea class="col-sm-12 col-xs-12" id="notes-text"></textarea>
+                        <br>
+                        <button id="save-note" class="btn btn-success">Snimi</button>
+                    </div>
+                </div>
+          </div>
+    </div>
+    
+    <script type="text/javascript">
+      $('#menu').load('menu.html');
+    </script>
+        <!--<script src="theme/jquerymobile/jquery.mobile-1.4.5.min.js"></script>-->
+        <script src="theme/bootstrap/js/bootstrap.min.js"></script>
+        <!--<script src="theme/jasny-bootstrap/js/jasny-bootstrap.min.js"></script>-->
+  </body>
+</html>
