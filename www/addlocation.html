@@ -8,93 +8,10 @@
     <link href="theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <script type="text/javascript" charset="utf-8">
-
-  /*  // Wait for device API libraries to load
-    //
-    //document.addEventListener("deviceready", onDeviceReady, false);
-
-    // device APIs are available
-    //
-    function onDeviceReady() {
-        var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-        db.transaction(populateDB, errorCB, successCB);
-    }
-
-    // Populate the database
-    //
-    function populateDB(tx) {
-        //tx.executeSql('DROP TABLE IF EXISTS DEMO');
-       // tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id unique, data)');
-       // tx.executeSql('INSERT INTO DEMO (id, data) VALUES (1, "First row")');
-        //tx.executeSql('INSERT INTO DEMO (id, data) VALUES (2, "Second row")');
-        tx.executeSql('SELECT * FROM DEMO WHERE 1', function(res)
-            {
-                console.log(res);
-                alert(res);
-            });
-    }
-
-    // Transaction error callback
-    //
-    function errorCB(tx, err) {
-        alert("Error processing SQL: "+err);
-    }
-
-    // Transaction success callback
-    //
-    function successCB(data) {
-        alert("success!");
-    }
-
-*/
-
-   /*var longitude;
-   var latitude;
-   var description;
-   var imageSrc;*/
-
     var db = null;
 
     document.addEventListener('deviceready', function() {
       db = window.sqlitePlugin.openDatabase({name: 'kud.db', location: 'default'});
-    
-
-
-         
-         /*db.transaction(function(tx) {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS DemoTable (name, score)');
-            tx.executeSql('INSERT INTO DemoTable VALUES (?,?)', ['Alice', 101]);
-            tx.executeSql('INSERT INTO DemoTable VALUES (?,?)', ['Betty', 202]);
-          }, function(error) {
-            console.log('Transaction ERROR: ' + error.message);
-          }, function() {
-            console.log('Populated database OK');
-          });*/
-         /* $('#save').on('click', function(){
-            var name = $('#name').val();
-            var score = $('#score').val();
-             db.transaction(function(tx) {
-                tx.executeSql('CREATE TABLE IF NOT EXISTS DemoTable (name, score)');
-                tx.executeSql('INSERT INTO DemoTable VALUES (?,?)', [name, score]);
-                //tx.executeSql('INSERT INTO DemoTable VALUES (?,?)', ['Betty', 202]);
-              }, function(error) {
-                console.log('Transaction ERROR: ' + error.message);
-              }, function() {
-                console.log('Dodat podatak');
-              });
-
-          });
-
-          $('#show').on('click', function(){
-              db.transaction(function(tx) {
-                tx.executeSql('SELECT * FROM DemoTable', [], function(tx, rs) {
-                    alert(rs.rows.item(0).name);
-                  console.log('Record count (expected to be 2): ' + rs.rows.item(0).mycount);
-                }, function(tx, error) {
-                  console.log('SELECT error: ' + error.message);
-                });
-              });
-            });*/
             $('#my-location').on('click', function(){
               navigator.geolocation.getCurrentPosition(onGelocationSuccess, onGelocationError);
             });
@@ -138,16 +55,6 @@
 
 
     var onGelocationSuccess = function(position) {
-        /*alert('Latitude: '          + position.coords.latitude          + '\n' +
-              'Longitude: '         + position.coords.longitude         + '\n' +
-              'Altitude: '          + position.coords.altitude          + '\n' +
-              'Accuracy: '          + position.coords.accuracy          + '\n' +
-              'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-              'Heading: '           + position.coords.heading           + '\n' +
-              'Speed: '             + position.coords.speed             + '\n' +
-              'Timestamp: '         + position.timestamp                + '\n');*/
-              /*latitude = position.coords.latitude;
-              longitude = position.coords.longitude;*/
               $('#latitude').val(position.coords.latitude);
               $('#longitude').val(position.coords.longitude);
     };
@@ -244,7 +151,7 @@
   </head>
   <body>
   <div id="menu"></div>
-  <button id="save-location">Save Location</button>
+  <button id="save-location" class="btn btn-success">Sakrij mapu</button>
   <div style="/*margin-top: 100px;*/ width:100%;height: 250px;" id="map_canvas"></div>
   <div class="container">
     <div class="col-xs-12 col-sm-12">

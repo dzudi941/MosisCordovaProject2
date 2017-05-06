@@ -52,7 +52,7 @@ document.addEventListener('deviceready', function() {
                         }
                         for (var j = 0; j < result.rows.length; j++) {
                             $('#your-notes').append("<p>Datum: "+result.rows.item(j).notesdate+" Vreme: "+result.rows.item(j).notestime+"</p>");
-                            $('#your-notes').append("<p>Text: "+result.rows.item(j).notestext+"</p>");
+                            $('#your-notes').append("<p>"+result.rows.item(j).notestext+"</p>");
                         }
                     });
                     });
@@ -119,7 +119,7 @@ document.addEventListener('deviceready', function() {
            console.log('Transaction ERROR: ' + error.message);
          }, function() {
             $('#your-notes').append("<p>Datum: "+$('#notes-date').val()+" Vreme: "+$('#notes-time').val()+"</p>");
-            $('#your-notes').append("<p>Text: "+$('#notes-text').val()+"</p>");
+            $('#your-notes').append("<p>"+$('#notes-text').val()+"</p>");
             $('#notes-date').val("");
             $('#notes-time').val("");
             $('#notes-text').val("");
